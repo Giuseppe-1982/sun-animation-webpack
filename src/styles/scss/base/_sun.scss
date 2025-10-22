@@ -1,0 +1,46 @@
+@use '../abstracts/variables' as *; // Global variables (e.g., colors, sizes) used throughout the project.
+@use '../abstracts/mixins' as *; // Reusable mixins for animations, positioning, and other utilities.
+@use '../abstracts/maps' as *; // Maps for organized key-value pairs like theme colors and animation settings.
+
+// *******************************************************
+// Styles for the Sun Element
+// *******************************************************
+//
+// The following block defines the visual appearance and animations for the sun element. 
+// The sun is styled to be a circular, glowing object that moves along a defined path 
+// across the viewport to simulate the sun's movement throughout the day. 
+//
+// Key Features:
+// - **Pulsating Effect**: Creates a rhythmic "throbbing" animation, simulating solar activity.
+// - **Path Animation**: Moves the sun along a realistic arc to mimic its journey across the sky.
+// - **Positioning**: The sun is positioned using absolute coordinates, 
+//    allowing precise control over its placement within the viewport.
+// - **Circular Shape**: Achieved with a `border-radius` to make the sun appear round.
+// - **Layering**: A z-index is applied to ensure proper stacking order relative to other elements.
+
+.sun {
+  // Combines path and pulsating animations. 
+  @include dynamic-animations(
+    (sunPath, 10s, linear, 3.5s, infinite), 
+    (sunPulsate, 10s, linear, 3.5s, infinite)
+  ); 
+  // Path animation makes the sun move across the screen, while pulsating simulates brightness changes.
+  @include mixin-sunPath(sunPath, $sun-settings); 
+  // Defines the sun's movement across the sky, including changes to its gradient and shadow.
+
+  @include mixin-sunPulsate(sunPulsate); 
+  // Adds a pulsating effect to simulate solar activity, making the sun appear to "breathe."
+
+  @include position($left: 15vw, $bottom: -19.2vh, $position: absolute); 
+  // Positions the sun 15% from the left edge and slightly off-screen at the bottom.
+
+  @include size($width: 12vw); 
+  // Sets the width of the sun to 12% of the viewport width; height matches width to maintain a circular shape.
+
+  @include z-index(1); 
+  // Ensures the sun is rendered above background elements but below foreground elements like clouds.
+  & {
+  border-radius: $border-radius; 
+  }
+  // Rounds the corners of the sun to create a perfect circular appearance.
+}

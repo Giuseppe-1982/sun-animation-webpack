@@ -1,0 +1,71 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// *******************************************************
+// Styles for the Moon Element
+// *******************************************************
+//
+// This block defines the visual appearance and animations 
+// for the moon element, focusing on a glowing effect and a 
+// rotating, fading texture. The moon is composed of two main 
+// elements:
+// - **`.moon-container`**: Defines the main glowing moon effect with 
+//   fixed positioning and a soft glow around the moon.
+// - **`.moon-texture`**: Adds texture to the moon's surface, simulating 
+//   the rotation and fading of the moon’s surface over time.
+//
+// Key Features:
+// - **Glowing effect**: Creates a soft, illuminated appearance for the moon.
+// - **Rotation and fading animations**: Simulates the natural rotation and 
+//   dynamic fading of the moon’s surface for realism.
+// - **Responsive design**: Ensures the moon adjusts to various screen sizes 
+//   and viewport positions.
+// - **Layering**: Uses z-index to place the moon above other background elements.
+//
+// Usage Notes:
+// - The moon's position is fixed in the top-right corner, making it stay 
+//   in place when scrolling.
+// - The texture is set to rotate and fade continuously to simulate a dynamic 
+//   surface.
+
+.moon-container {
+  @include dynamic-animations((moonGlow, 10s, linear, 3.5s, infinite)); 
+  // Animates the glowing effect for the moon to simulate a soft light emission
+  @include mixin-moonGlow(moonGlow); 
+  // Applies the glowing light effect to the moon
+  @include position($right: 10%, $top: 5%, $position: fixed); 
+  // Positions the moon in the top-right corner with a fixed position
+  @include size($width: 12vw); // Sets the moon's width relative to the viewport width
+  @include z-index(8); 
+  // Ensures the moon stays above other background elements
+    & {
+      border-radius: $border-radius; 
+    }
+  // Makes the moon circular
+  @include box-shadow(0 0 150px 50px #f6f1d5);
+  // Adds a soft, glowing halo effect around the moon
+    & {
+      overflow: hidden; 
+    }
+  // Prevents any texture from overflowing the moon's boundaries
+}
+
+.moon-texture {
+  @include dynamic-animations((moonRotate, 16s, linear, 0s, infinite), (moonFade, 10s, linear, 3.5s, infinite)); 
+  // Animates the rotation and fading of the moon's texture continuously
+  @include mixin-moonRotate(moonRotate); 
+  // Applies the rotation animation for the moon's surface
+  @include mixin-moonFade(moonFade); 
+  // Applies the fading effect to simulate the moon's surface changing over time
+  @include position($top: -100%, $position: relative); 
+  // Positions the texture to fully cover the moon container
+  @include size($width: 300%, $height: 200%); 
+  // Texture size is larger than the moon to allow for smooth rotation
+    & {
+    background: transparent url(https://th.bing.com/th/id/R.cbdcd9b8a891a241ffcbf80db4039c6e?rik=lCHuYksJfApZ2g&pid=ImgRaw&r=0) no-repeat 0% 0% / cover;
+    }
+  // Ensures no background color is applied; the focus is on the texture 
+  // Sets the moon texture image
+  // Prevents tiling of the texture image
+  // Ensures the texture covers the entire area of the moon container
+}

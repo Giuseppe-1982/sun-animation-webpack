@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="Width=device-width, initial-scale=1">
+    <meta name="description" content="Experience the dynamic solar cycle animation with sun, moon, clouds, and shooting stars, complemented by background music.">
+    <title>Solar Cycle Animation</title>
+  </head>
+  <body>
+    <!-- Sun element used for the solar cycle animation -->
+    <div class="sun"></div>
+    <!-- Cityscape image of New York, used as background -->
+    <img src="https://th.bing.com/th/id/R.83071aa8c8e93030ad8fd52726e458cf?rik=WU5S1Wq1siKYpg&pid=ImgRaw&r=0" class="cityscape" alt="New York cityscape"> 
+    <!-- Moon container, holding the moon and its texture details -->
+    <div class="moon-container">
+      <!-- Internal secondary moon texture for additional effects -->
+      <div class="moon-texture"></div> 
+    </div>
+    <!-- Cloud container, holding images of clouds floating across the sky -->
+    <div class="cloud-container">
+      <!-- Individual cloud images moving across the sky -->
+      <img src="assets/images/cloud1.png" class="cloud cloud1-std" alt="A cloud moving across the sky">
+      <img src="assets/images/cloud2.png" class="cloud cloud2-std" alt="A cloud moving across the sky">
+      <img src="assets/images/cloud3.png" class="cloud cloud3-std" alt="A cloud moving across the sky">
+      <img src="assets/images/cloud1.png" class="cloud cloud1-alt" alt="A cloud moving across the sky">
+      <img src="assets/images/cloud2.png" class="cloud cloud2-alt" alt="A cloud moving across the sky">
+      <img src="assets/images/cloud3.png" class="cloud cloud3-alt" alt="A cloud moving across the sky">
+    </div>
+    <!-- Particle effects container (using particles.js library) -->
+    <div id="particles-js"></div>
+    <!-- Shooting stars section with individual shooting star spans -->
+    <section class="shooting-stars-container">
+      <span class="shooting-star"></span>
+      <span class="shooting-star"></span>
+      <span class="shooting-star"></span>
+      <span class="shooting-star"></span>
+    </section>
+    <!-- Background music element with looping and autoplay -->
+    <audio id="background-music" autoplay loop>
+      <source src="assets/audio/Dream Theater - Another Day [OFFICIAL VIDEO].mp3" type="audio/mpeg"/>
+      <!-- Fallback message for browsers that do not support the audio tag -->
+      Your browser does not support audio tag
+    </audio>
+    <!-- Including the particles.js library for particle effects -->
+    <!-- particles.js library - https://github.com/VincentGarreau/particles.js --> 
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  </body>
+</html>
+
+

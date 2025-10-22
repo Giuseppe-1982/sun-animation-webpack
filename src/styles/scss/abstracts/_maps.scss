@@ -1,0 +1,16 @@
+$sun-settings: (
+  // Gradient colors for different times of the day
+  gradient-sunrise: linear-gradient(45deg, #fe4c01, #ed8728, #fe4c01), // Sunrise gradient
+  gradient-morning: linear-gradient(#fcef9a, #fcec90, #f6ee8f), // Morning gradient
+  gradient-sunset: linear-gradient(135deg, #ffc800, #ffa93d, #fe5400 70%, #fe5400 100%), // Sunset gradient
+  gradient-night: linear-gradient(45deg, #68228b, #2a1c6c, #1d1b47, #000000), // Night gradient
+
+  // Shadows to simulate different sunlight intensities at various times of the day
+  shadow-sunrise: (inset 0 0 20px 20px #f06553, 0 0 1200px 120px #ffb0b4, 0 0 300px 300px #d1afc7), // sunlight effect for sunrise
+  shadow-morning: (inset 0 0 200px 10px #fff, 0 0 200px 100px #ffb0b4, 0 0 100px 10px #ffeb7a), // sunlight effect for morning
+  shadow-noon: (0 0 1000px 500px #fff, 0 0 10px 10px #fffcc1), // sunlight effect for noon
+  shadow-afternoon: (0 0 1000px 5px #ffee50, 0 0 1000px 5px #ffff70), // sunlight effect for afternoon
+  shadow-sunset: (0 0 50px 50px #ffdb53, 0 0 100px 250px #fe5400, 0 0 1000px 500px #e92100), // sunlight effect for sunset
+  shadow-dusk: (0 0 25px 25px #ffdb53, 0 0 1000px 500px #c10900), // sunlight effect for dusk
+  shadow-night: (0 0 1000px 200px #2a1c6c, 0 0 300px 200px #1d1b47, 0 0 300px 1800px #000000) // sunlight effect for night
+);

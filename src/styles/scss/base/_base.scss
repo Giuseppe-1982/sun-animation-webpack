@@ -1,0 +1,116 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// *******************************************************
+// Styles for the Body and Background Transition
+// *******************************************************
+//
+// This block defines the background color transition for the sky, 
+// simulating different times of day. It also ensures that the page 
+// fills the full height of the viewport with no scrollbars.
+//
+// Key Features:
+// - Smooth transition of the background color to simulate different 
+//   times of day (e.g., from night to day).
+// - Prevents scrollbars for a full-screen, immersive experience.
+body {
+  @include dynamic-animations((skyTransition, 10s, linear, 3.5s, infinite)); 
+  // Creates a smooth transition of the background color
+  @include mixin-skyTransition(skyTransition); 
+  @include position($position: relative); // Positions the body relative to the viewport
+  @include size($width: null, $height: 100vh); // Ensures full viewport height
+  & {
+    background-color: #68228b; // Initial background color (night sky)
+    margin: 0; // Removes default margin to prevent unwanted spacing
+    overflow: hidden; // Prevent scrollbars if elements extend outside the viewport
+  }
+}
+
+// *******************************************************
+// Styles for the Cityscape Image
+// *******************************************************
+//
+// This section positions and sizes the cityscape image at the bottom 
+// of the page, ensuring it spans the entire width and remains fixed.
+//
+// Key Features:
+// - Ensures the cityscape covers the full width of the screen.
+// - Keeps the image fixed at the bottom of the viewport.
+img {
+  @include position($bottom: 0, $position: absolute); // Positions the image at the bottom
+  @include size($width: 100%, $height: auto); // Full width, auto height to maintain aspect ratio
+  @include z-index(3); // Layers the cityscape above other background elements
+}
+
+// *******************************************************
+// Styles for the Main Section
+// *******************************************************
+//
+// This section defines the full-screen container for the sky and other 
+// visual elements. It ensures the background effect occupies the entire viewport.
+//
+// Key Features:
+// - Covers the entire screen width and height for the dynamic sky effect.
+section {
+  @include position($left: 0, $top: 0); // Positions the section at the top-left corner
+  @include size($width: 100%, $height: 100vh); // Full-screen size to cover the entire viewport
+}
+
+// *******************************************************
+// Pause Class - Pauses Animations
+// *******************************************************
+//
+// The `.paused` class can be applied to elements to pause all animations 
+// and add a blur effect, useful for interactive elements that should stop 
+// animating when the user interacts.
+//
+// Key Features:
+// - Pauses all animations when the class is applied.
+// - Adds a blur effect to paused elements for visual feedback.
+// - Reduces opacity to indicate the element is paused.
+.paused {
+  animation-play-state: $animation-paused; // Pauses animations when the class is active
+  filter: blur(2px); // Adds a blur effect to indicate pause state
+  opacity: 0.5; // Dimmed effect for visual feedback
+  transition: opacity $transition-time ease, filter $transition-time ease; // Smooth transition for blur and opacity
+}
+
+// *******************************************************
+// Pause State for Particles
+// *******************************************************
+//
+// This block ensures the particle background also pauses its visibility 
+// animations when the `.paused` class is applied to the body or other elements.
+//
+// Key Features:
+// - Pauses the visibility of particles when the `.paused` class is added.
+#particles-js.paused {
+  animation-play-state: $animation-paused; // Pauses particle visibility animations
+}
+
+// *******************************************************
+// Pause State for Shooting Stars
+// *******************************************************
+//
+// This block stops the shooting stars' animation when the `.paused` 
+// class is applied to the parent section. The stars will stop moving, 
+// and their comet tails will also be paused.
+//
+// Key Features:
+// - Pauses the movement and tail animations of shooting stars.
+section span.paused {
+  animation-play-state: $animation-paused; // Pauses shooting stars' animation
+}
+
+// *******************************************************
+// Pause State for Comet Tails
+// *******************************************************
+//
+// Ensures the comet tail effect pauses along with the shooting stars 
+// when the `.paused` class is applied.
+//
+// Key Features:
+// - Pauses the comet tail animations to synchronize with the shooting stars.
+section span.paused::before {
+  animation-play-state: $animation-paused; // Pauses comet tail animations
+}
