@@ -41,11 +41,11 @@ sun-animation-base/
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/Giuseppe-1982/sun-animation-base
+   git clone https://github.com/Giuseppe-1982/sun-animation-webpack
    ```
 2. **Navigate to the project folder**:
    ```bash
-   cd sun-animation-base
+   cd sun-animation-webpack
    ```
 3. **Install dependencies**:
    ```bash
