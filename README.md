@@ -58,7 +58,8 @@ sun-animation-base/
    
 ## Usage
 
-- Open your browser at http://localhost:8080 (or the port displayed in the terminal).
+- Open your browser at the URL displayed in the terminal after running npm start.
+- Typically it will be http://localhost:3000/, but check the terminal output.
 - Click anywhere on the page to toggle pause/resume for all animations.
 
   ## Technologies Used
