@@ -1,5 +1,6 @@
-// Initial configuration of the particles: This is where you define the properties and behaviors of the particles. 
-//It includes settings for particle number, color, shape, opacity, size, and movement.
+import 'particles.js'; // Import particles.js library (Webpack handles bundling)
+
+// Base particle configuration (appearance and behavior)
 const particlesConfig = {
   "particles": {
     "number": {
@@ -111,18 +112,16 @@ const particlesConfig = {
   "retina_detect": true
 };
 
-// Configuration to pause the particles: This creates a copy of the initial particle configuration 
-// and modifies it to effectively pause the animation by setting the movement speed to 0
-// and disabling the size and opacity animations
+// Pause configuration: copy of base config with movement and animations disabled
 const particlesPauseConfig = JSON.parse(JSON.stringify(particlesConfig));
 particlesPauseConfig.particles.move.speed = 0; // Set movement speed to 0 to pause the particles
 particlesPauseConfig.particles.size.anim.enable = false; // Disable size animation to pause it
 particlesPauseConfig.particles.opacity.anim.enable = false; // Disable opacity animation to pause it
 
-// Flag to manage the pause of the particles: a boolean variable particlesPaused is used to keep track of whether the particles are currently paused or not
+// Tracks current particle state (true = paused)
 let particlesPaused = false;
 
-// Function to restart the particles: startParticles function initializes the particles using the original configuration
+// Start particles animation using base config
 function startParticles() {
   if (typeof particlesJS !== 'undefined') { //Check to prevent errors if the library is not loaded correctly
     particlesJS('particles-js', particlesConfig); // Start particles with the original configuration
@@ -131,7 +130,7 @@ function startParticles() {
   }
 }
 
-// Function to pause the particles: pauseParticles function initializes the particles using the paused configuration
+// Apply pause config to stop particle movement and animations
 function pauseParticles() {
   if (particlesJS) { //Check to prevent errors if the library is not loaded correctly
     particlesJS('particles-js', particlesPauseConfig); // Pause particles using the paused configuration
@@ -143,7 +142,7 @@ function pauseParticles() {
 // Initialize the particles at the start: Calls startParticles() to ensure particles are displayed when the page loads
 startParticles();
 
-// Add a click listener: Toggles between pausing and restarting the particles when the document is clicked, and updates the particlesPaused flag accordingly
+// Toggle pause/start on document click
 document.addEventListener('click', () => {
   if (particlesPaused) {
     startParticles(); // Restart the particles if paused
