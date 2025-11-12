@@ -1,7 +1,7 @@
 # Solar Cycle Animation (Webpack Version)
 
 An interactive web animation that simulates a dynamic solar cycle featuring the sun, moon, moving clouds, and shooting stars.  
-Built with HTML, SCSS, JavaScript, and powered by Webpack.
+Built with HTML, SCSS, JavaScript — bundled with **Webpack** and served through **Vite.js** for fast development.
 
 ## Features
 
@@ -9,8 +9,9 @@ Built with HTML, SCSS, JavaScript, and powered by Webpack.
 - **Dynamic Clouds**: Clouds drift naturally across the sky with subtle animations.
 - **Shooting Stars**: Animated shooting stars appear randomly for a lively night sky.
 - **Particle Effects**: Starry night effect implemented using [particles.js](https://github.com/VincentGarreau/particles.js).
-- **Background Music**: Relaxing music plays automatically; click anywhere to pause/resume both animations and audio.
+- **Background Music**: Relaxing music is preloaded; click anywhere to pause/resume both animations and audio.
 - **Interactive Pause**: Single click pauses all animations and background music; click again to resume.
+- **Optimized Build**: Webpack handles SCSS compilation, asset bundling, and output cleanup for production.
 
 ## Project Structure
 
@@ -18,22 +19,23 @@ Built with HTML, SCSS, JavaScript, and powered by Webpack.
 sun-animation-base/
 ├── public/
 │   └── assets/               
-│       ├── audio/            # Background music files
-│       └── images/           # Images used in the animation
-├── src/
-│   ├── scripts/
-│   │   ├── main.js           # Controls animations and background music
-│   │   └── particle.js       # Configures and manages particle effects
-│   └── styles/
-│       └── scss/
-│           ├── abstracts/    # Variables, mixins, and functions
-│           ├── base/         # Base styles and resets
-│           └── main.scss     # Main entry SCSS file
-├── .gitignore                
-├── index.html                # Main HTML file
-├── package-lock.json         # Lockfile for npm dependencies
-├── package.json              # Project metadata and dependencies
-└── webpack.config.js         # Webpack configuration for bundling and building the project     
+│       ├── audio/               # Background music files
+│       └── images/              # Images used in the animation
+├── src/ 
+│   ├── scripts/  
+│   │   ├── main.js              # Controls animations and background music
+│   │   └── particles-setup.js   # Configures and manages particle effects
+│   └── styles/   
+│       └── scss/ 
+│           ├── abstracts/       # Variables, mixins, and functions
+│           ├── base/            # Base styles and resets
+│           └── main.scss        # Main entry SCSS file
+├── .gitignore                   
+├── index.html                   # Main HTML file
+├── package-lock.json            # Lockfile for npm dependencies
+├── package.json                 # Project metadata and dependencies
+├── README.md                    # Project documentation
+└── webpack.config.js            # Webpack configuration for bundling and building the project     
 
 ```
 
@@ -55,14 +57,16 @@ sun-animation-base/
    ```bash
    npm start
    ```
-   
+   This uses Vite.js for a fast and responsive development environment.
+
+
 ## Usage
 
 - Open your browser at the URL displayed in the terminal after running npm start.
 - Typically it will be http://localhost:3000/, but check the terminal output.
 - Click anywhere on the page to toggle pause/resume for all animations.
 
-  ## Technologies Used
+## Technologies Used
 
 - **HTML5** for structure
 - **SCSS** for styling and animations
