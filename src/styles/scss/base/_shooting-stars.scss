@@ -1,89 +1,49 @@
 @use '../abstracts/variables' as *;
 @use '../abstracts/mixins' as *;
 
-// *******************************************************
-// Styles for Shooting Stars Effect
-// *******************************************************
-//
-// This block defines the animations and styles for creating a dynamic 
-// shooting stars effect in the night sky. Each shooting star is styled 
-// as a span element, featuring a glowing appearance, comet tail, and 
-// smooth animations for movement.
-//
-// Key Features:
-// - Dynamic animations simulate shooting stars moving diagonally across the viewport.
-// - Comet tail effect is created using pseudo-elements and gradient transparency.
-// - Individual styles for stars using `nth-child` selectors for variety.
-// - Responsive adjustments ensure consistent visuals across different screen sizes.
-//
-// Usage Notes:
-// - Add the `span.shooting-star` class to elements to activate the effect.
-// - Customize individual stars with `nth-child` selectors for unique animations 
-//   (e.g., position, size, speed).
-// - Ensure all animation mixins (e.g., `mixin-shootingStars`, `mixin-cometTail`) 
-//   and keyframes are defined in the project.
+/* Shooting Stars Layer
+   Creates animated stars with diagonal movement and comet tail. */
 
 span.shooting-star {
-  @include dynamic-animations((shootingStars, 13.5s, ease-in, 0s, infinite));
-  // Smooth diagonal animation for the shooting star
-  @include mixin-shootingStars; 
-  // Applies predefined animation styles for shooting stars
-  @include position($left: 50%, $top: 50%, $position: absolute);
-  // Positions the star centrally in the viewport
-  @include size(2px); // Defines the shooting star's size
-    & {
-    background-color: #fff; // White color for the star
-    border-radius: $border-radius; // Ensures a circular shape
-    }
-  @include box-shadow( // Adds a glowing effect to the shooting star
+  background-color: #fff; // Star core color
+  border-radius: $border-radius; // Rounded point
+  @include dynamic-animations((shootingStars, 13.5s, ease-in, 0s, infinite)); // Main trajectory animation
+  @include mixin-shootingStars; // Keyframe set for star flight
+  @include position($left: 50%, $top: 50%, $position: absolute); // Start position reference
+  @include size(2px); // Star size
+  @include box-shadow(
     0 0 0 2px rgba(255, 255, 255, 0.1),
     0 0 0 4px rgba(255, 255, 255, 0.1),
     0 0 1px 1px rgba(255, 255, 255, 1)
-  );
+  ); // Glow
 
-  // Handle the animation state when the 'paused' class is added
   &.paused {
-    animation-play-state: paused !important; // Pause the animation when the 'paused' class is applied
+    animation-play-state: paused !important; // Pause when parent is paused
   }
 }
 
-// Pseudo-element for the comet tail
+/* Comet Tail */
+
 span.shooting-star::before {
-  @include dynamic-animations((cometTail, 10s, linear, 3.5s, infinite));
-  // Gradual fading effect for the comet tail
-  @include mixin-cometTail(cometTail); 
-  // Applies the animation for the comet tail
+  background: linear-gradient(90deg, #fff, transparent); // Tail fade
+  content: '';
+  transform: translateY(-50%); // Center tail vertically
+  @include dynamic-animations((cometTail, 10s, linear, 3.5s, infinite)); // Tail fade timing
+  @include mixin-cometTail(cometTail); // Tail keyframes
   @include position($top: 50%, $position: absolute);
-  // Centers the comet tail relative to the shooting star
-  @include size(200px, 1px); 
-  // Defines the tail's size (long and thin)
-  & {
-  background: linear-gradient(90deg, #fff, transparent); // Gradual fade effect for the tail
-  content: ''; // Required for pseudo-element rendering
-  transform: translateY(-50%); // Aligns the tail with the center of the shooting star
-  }
-  // Handle the animation state for the comet tail when the 'paused' class is added
+  @include size(200px, 1px); // Tail length + thickness
+
   &.paused {
-    animation-play-state: paused !important; // Pause the comet tail animation when 'paused' class is applied
+    animation-play-state: paused !important;
   }
 }
 
-// *******************************************************
-// Customization for Individual Shooting Stars
-// *******************************************************
-//
-// These styles use `nth-child` selectors to customize specific stars, 
-// allowing unique animations, positions, and sizes for variety. This 
-// enhances the realism of the effect and creates a more dynamic scene.
+/* Individual Star Variants */
 
 span.shooting-star:nth-child(1) {
-  @include animation-properties(0.8s, $delay: 3s);
-  // Applies unique timing for the first star
-  @include position($left: 80vw, $top: -25px); 
-  // Sets the position for the first star
-  // Starts near the right edge of the screen
-  @include size(4px); 
-  // Larger size for a brighter appearance
+  @include animation-properties(0.8s, $delay: 3s); // Unique timing
+  @include position($left: 80vw, $top: -25px); // Origin point
+  @include size(4px); // Larger / brighter star
   @include box-shadow(
     0 0 0 2px rgba(255, 255, 255, 0.1),
     0 0 0 20px rgba(255, 255, 255, 0.1),
@@ -93,37 +53,28 @@ span.shooting-star:nth-child(1) {
 
 span.shooting-star:nth-child(2) {
   @include dynamic-animations(
-    (shootingStars, 2s, linear, 1s, 1), 
+    (shootingStars, 2s, linear, 1s, 1),
     (starVisibilityControl2, 2s, linear, 1.25s, 1)
-  );
-  // Slower animation for a gradual shooting star effect
-  // Starts earlier than the first star but takes longer to complete
-  @include mixin-starVisibilityControl2(starVisibilityControl2);
-  // Controls visibility specifically for this star
-  @include position($left: 50vw, $top: -10px); 
-  // Central position for the second star
+  ); // Slow entry + controlled fade
+  @include mixin-starVisibilityControl2(starVisibilityControl2); // Visibility transition
+  @include position($left: 50vw, $top: -10px);
 }
 
 span.shooting-star:nth-child(3) {
   @include dynamic-animations(
-    (shootingStars, 3s, linear, -1s, 1), 
+    (shootingStars, 3s, linear, -1s, 1),
     (starVisibilityControl2, 3s, linear, -0.25s, 1)
-  );
-  // Custom timing and visibility animation for the third star
+  ); // Negative delay = starts mid-animation
   @include mixin-starVisibilityControl2(starVisibilityControl2);
-  @include position($left: 110vw, $top: -10px); 
-  // Position outside the viewport for diagonal entry
+  @include position($left: 110vw, $top: -10px); // Off-screen start
 }
 
 span.shooting-star:nth-child(4) {
   @include dynamic-animations(
-    (shootingStars, 5s, linear, 5s, infinite), 
+    (shootingStars, 5s, linear, 5s, infinite),
     (starVisibilityControl, 10s, linear, 3.5s, infinite)
-  );
-  // Continuous animation for the fourth star
-  @include mixin-starVisibilityControl(starVisibilityControl); 
-  @include position(75vw, null, -10px, null, null); 
-  // Custom position for the fourth star
-  @include z-index(2); 
-  // Ensures this star appears above others
+  ); // Continuous loop star
+  @include mixin-starVisibilityControl(starVisibilityControl);
+  @include position(75vw, null, -10px, null, null);
+  @include z-index(2); // Foreground layer
 }

@@ -1,77 +1,60 @@
 @use '../abstracts/mixins' as *;
 
-// *******************************************************
-// Styles for the Cloud Effects in the Sky
-// *******************************************************
-//
-// This block contains the styles for the clouds in the sky,
-// including the container and individual cloud elements that 
-// create the dynamic movement effect. Different clouds are 
-// animated with varying speeds and positions to simulate 
-// realistic sky behavior.
-//
-// Key Features:
-// - Animates cloud movement with different speeds (drift).
-// - Defines the cloud container to cover the entire viewport.
-// - Each cloud variation has unique animation and size settings.
-//
-// The animation of the clouds helps create a dynamic background
-// simulating the drifting of clouds across the sky.
-
+/* Cloud layer:
+   Full-screen container with drifting cloud elements.
+   Each cloud variation uses different speeds/sizes for depth.
+*/
 .cloud-container {
-  @include position($position: absolute); // Positions the container absolutely
-  @include size($width: 100%, $height: 100vh); // Ensures the container covers the full viewport height
-  & {
-    overflow: hidden; // Prevents clouds from overflowing outside the container
-  }
+  overflow: hidden; // Hide overflow from drifting movement
+  @include position($position: absolute);
+  @include size($width: 100%, $height: 100vh);
 }
 
+/* Base cloud element */
 .cloud {
-  @include position($position: absolute); // Positions individual clouds absolutely
-  @include size($width: null, $height: auto); // Auto adjusts the height of clouds based on their width
-  @include z-index(10); // Clouds appear above the background layers
-  & {
-    border: none; // No border for the clouds
-  }
+  border: none;
+  @include position($position: absolute);
+  @include size($width: null, $height: auto);
+  @include z-index(10);
 }
 
-// Cloud variations with different animation speeds and sizes
-// Each cloud has a unique drifting speed to simulate depth and variety
-.cloud1-std { 
-  @include dynamic-animations((cloudDrift, 50s, linear, 0s, infinite)); // Cloud drifting animation with a 50s duration
-  @include mixin-cloudDrift(cloudDrift); // Mixin for defining the cloud drift animation
-  @include position($top: 0); // Starts from the top of the container
-  @include size($width: null, $max-width: 39.06vw); // Defines maximum width for cloud1
+/* Standard cloud variants (foreground layer) */
+.cloud1-std {
+  @include dynamic-animations((cloudDrift, 50s, linear, 0s, infinite));
+  @include mixin-cloudDrift(cloudDrift);
+  @include position($top: 0);
+  @include size($width: null, $max-width: 39.06vw);
 }
 
-.cloud2-std { 
-  @include dynamic-animations((cloudDrift, 35s, linear, 0s, infinite)); // Cloud drifting animation with a 35s duration
-  @include position($top: 0); // Starts from the top of the container
-  @include size($width: null, $max-width: 32.55vw); // Defines maximum width for cloud2
+.cloud2-std {
+  @include dynamic-animations((cloudDrift, 35s, linear, 0s, infinite));
+  @include position($top: 0);
+  @include size($width: null, $max-width: 32.55vw);
 }
 
-.cloud3-std { 
-  @include dynamic-animations((cloudDrift, 80s, linear, 0s, infinite)); // Cloud drifting animation with an 80s duration
-  @include position($top: 0); // Starts from the top of the container
-  @include size($width: null, $max-width: 39.06vw); // Defines maximum width for cloud3
+.cloud3-std {
+  @include dynamic-animations((cloudDrift, 80s, linear, 0s, infinite));
+  @include position($top: 0);
+  @include size($width: null, $max-width: 39.06vw);
 }
 
-// Alternative cloud variations with different drift speeds and vertical positioning
-// These clouds appear at different vertical positions to create depth in the sky
-.cloud1-alt { 
-  @include dynamic-animations((cloudDrift, 70s, linear, -20s, infinite)); // Cloud drifting animation with a 70s duration
-  @include position($top: 24.18vh); // Positioned 24.18% from the top of the viewport
-  @include size($width: null, $max-width: 19.53vw); // Defines maximum width for cloud1-alt
+/* Alternate cloud variants (different height + drift timing)
+   Used to create parallax depth.
+*/
+.cloud1-alt {
+  @include dynamic-animations((cloudDrift, 70s, linear, -20s, infinite));
+  @include position($top: 24.18vh);
+  @include size($width: null, $max-width: 19.53vw);
 }
 
-.cloud2-alt { 
-  @include dynamic-animations((cloudDrift, 40s, linear, -5s, infinite)); // Cloud drifting animation with a 40s duration
-  @include position($top: 18.13vh); // Positioned 18.13% from the top of the viewport
-  @include size($width: null, $max-width: 32.55vw); // Defines maximum width for cloud2-alt
+.cloud2-alt {
+  @include dynamic-animations((cloudDrift, 40s, linear, -5s, infinite));
+  @include position($top: 18.13vh);
+  @include size($width: null, $max-width: 32.55vw);
 }
 
-.cloud3-alt { 
-  @include dynamic-animations((cloudDrift, 30s, linear, -10s, infinite)); // Cloud drifting animation with a 30s duration
-  @include position($top: 9.07vh); // Positioned 9.07% from the top of the viewport
-  @include size($width: null, $max-width: 26.04vw); // Defines maximum width for cloud3-alt
+.cloud3-alt {
+  @include dynamic-animations((cloudDrift, 30s, linear, -10s, infinite));
+  @include position($top: 9.07vh);
+  @include size($width: null, $max-width: 26.04vw);
 }

@@ -7,7 +7,7 @@ module.exports = {
   mode: 'development', // Sets the mode to development for better debugging and unminified output
   entry: {
     main: './src/scripts/main.js', // Main JavaScript file
-    particles: './src/scripts/particle.js', // Secondary JavaScript file
+    particles: './src/scripts/particles-setup.js', // Secondary JavaScript file
   },
   output: {
     filename: '[name].bundle.js', // Output filename format where [name] corresponds to the entry point names
@@ -21,7 +21,12 @@ module.exports = {
         test: /\.scss$/, // Rule to process SCSS files
         use: [
           MiniCssExtractPlugin.loader, // Loader to extract CSS into separate files
-          'css-loader', // Translates CSS into CommonJS modules
+          {
+            loader: 'css-loader', // Translates CSS into CommonJS modules
+            options: {
+              url: false, // <-- This disables url() processing, so Webpack won't try to resolve paths
+            },
+          },
           'sass-loader', // Compiles SCSS to CSS
         ],
       },

@@ -1,50 +1,17 @@
-// *******************************************************
-// Charset Declaration
-// *******************************************************
-//
-// Enforcing UTF-8 encoding in the main stylesheet helps avoid potential issues 
-// with character encoding, ensuring consistent rendering of special characters.
+/* Charset */
 @charset 'utf-8';
 
-// *******************************************************
-// Importing SCSS Modules from 'abstracts' Folder
-// *******************************************************
-//
-// The 'abstracts' folder contains utility files that define global styles, 
-// variables, mixins, and mappings to ensure reusability and maintainability 
-// across the project.
-//
-// - **variables**: Defines global variables for colors, font sizes, spacing, and other constants.
-// - **mixins**: Provides reusable mixins for common patterns, such as animations, positioning, and sizing.
-// - **maps**: Organizes key-value pairs, such as theme colors or responsive breakpoints, for cleaner styles.
-@use './abstracts/variables'; // Global variables for consistent styling
-@use './abstracts/mixins'; // Utility mixins for reusable styling patterns
-@use './abstracts/maps'; // Maps for theming and responsive design
+/* Abstracts
+   Global variables, mixins, and maps used across components. */
+@use './abstracts/variables';
+@use './abstracts/mixins';
+@use './abstracts/maps';
 
-// *******************************************************
-// Importing SCSS Modules from 'base' Folder
-// *******************************************************
-//
-// The 'base' folder contains foundational styles and component-specific 
-// styling rules. Each module focuses on a distinct visual or structural 
-// aspect of the design to maintain modularity and clarity.
-//
-// - **sun**: Defines the appearance and animations of the sun, including its 
-//   movement and pulsating effects.
-// - **moon**: Styles the moon element with textures, glowing effects, and animations 
-//   to create a nighttime aesthetic.
-// - **clouds**: Provides styles for cloud elements, including shapes, animations, 
-//   and smooth transitions to simulate motion.
-// - **stars**: Styles for static stars to create a starry sky backdrop.
-// - **shooting-stars**: Defines animations for shooting stars to add dynamic, 
-//   engaging effects to the scene.
-// - **animations**: Centralized definitions for core animations used throughout 
-//   the project, ensuring consistency.
-// - **base**: General layout and foundational styles, setting up the structural 
-//   framework for the entire design.
-@use './base/sun'; // Sun styles: appearance and animations
-@use './base/moon'; // Moon styles: textures, glow, and animations
-@use './base/clouds'; // Cloud styles: shapes, animations, and transitions
-@use './base/stars'; // Static star styles for the background
-@use './base/shooting-stars'; // Animations for shooting stars
-@use './base/base'; // Foundational layout and general styles
+/* Base Components
+   Modular visual elements and core layout. */
+@use './base/sun';            // Sun path + pulsation
+@use './base/moon';           // Moon glow + texture motion
+@use './base/clouds';         // Cloud drift layers
+@use './base/stars';          // Static star field (particles.js container)
+@use './base/shooting-stars'; // Diagonal meteor streaks
+@use './base/base';           // Layout + foundational styles

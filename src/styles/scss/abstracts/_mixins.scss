@@ -1,20 +1,16 @@
 @use './variables' as *;
 @use './maps' as *;
-@use "sass:list"; // Importa il modulo list
-@use "sass:map"; // Importa il modulo map
-@use "sass:meta"; // Importa il modulo meta
+@use 'sass:list'; 
+@use 'sass:map'; 
+@use 'sass:meta'; 
 
-
-// Mixin to define a sky transition animation using keyframes
-// Parameters:
-// $animation-name: The name of the animation (dynamic)
-// $night-color: Background color for the night phase (default: #68228b)
-// $morning-color: Background color for the morning/afternoon phase (default: #ccccff)
-// $sunset-color: Background color for the sunset phase (default: #fc753d)
+/* =============================
+   Sky transition animation
+   Changes sky color over a full day cycle
+   Params: $animation-name, $night-color, $morning-color, $sunset-color
+============================= */
 @mixin mixin-skyTransition($animation-name, $night-color: #68228b, $morning-color: #ccccff, $sunset-color: #fc753d) {
-  // Dynamically generates keyframes for the animation with the specified name
   @keyframes #{$animation-name} {
-    // Sky keyframe: body has a "skyTransition" animation that changes the background color over time  
     0%, 100% {
       background-color: $night-color; // Specifies the start and end colors for the night phase
     }
@@ -27,124 +23,110 @@
   }
 }
 
-// Mixin to handle position-related properties dynamically
-// Parameters:
-// $left, $right, $top, $bottom: Define the offset values (can be null)
-// $position: Define the CSS `position` property (can be null)
+/* =============================
+   Position helper
+   Dynamically sets position and offsets
+   Params: $left, $right, $top, $bottom, $position
+============================= */
 @mixin position($left: null, $right: null, $top: null, $bottom: null, $position: null) {
-   // Set the `left` property if $left is provided
-  @if $left != null {
-    & {
-      left: $left;
-    } 
-  }
-  // Set the `right` property if $right is provided
-  @if $right != null {
-    & {
-      right: $right;
-    }
-  }
-  // Set the `top` property if $top is provided
-  @if $top != null {
-    & {
-      top: $top;
-    }
-  }
-  // Set the `bottom` property if $bottom is provided
-  @if $bottom != null {
-    & {
-      bottom: $bottom;
-    }
-  }
-  // Set the `position` property if $position is provided
   @if $position != null {
     & {
-      position: $position;
+      position: $position; // Set the `position` property if $position is provided
+    }
+  }
+  @if $left != null {
+    & {
+      left: $left; // Set the `left` property if $left is provided
+    }
+  }
+  @if $right != null {
+    & {
+      right: $right; // Set the `right` property if $right is provided
+    }
+  }
+  @if $top != null {
+    & {
+      top: $top; // Set the `top` property if $top is provided
+    }
+  }
+  @if $bottom != null {
+    & {
+      bottom: $bottom; // Set the `bottom` property if $bottom is provided
     }
   }
 }
 
-// Mixin for creating a sun path animation
-// Sun keyframe: the sunPath animation makes the sun change its color gradient, shadow, and position to simulate different times of the day
-// Parameters:
-// $name: Specifies the name of the animation
-// $sun-settings: A map containing gradient and shadow values for different times of the day
-@mixin mixin-sunPath($name, $sun-settings) { 
-  // Generates keyframes for the animation with the specified name
+/* =============================
+   Sun path animation
+   Moves sun across sky with gradient & shadow
+   Params: $name, $sun-settings map
+============================= */
+@mixin mixin-sunPath($name, $sun-settings) {
   @keyframes #{$name} {
-    // Defines the sun's position, gradient, and shadow at sunrise
-    0% {
-      background: map.get($sun-settings, gradient-sunrise); // Sets the sun's gradient at sunrise
-      bottom: -19.2vh; // Sun position at sunrise
-      box-shadow: map.get($sun-settings, shadow-sunrise); // Sets the sunlight effect for sunrise
+    0% { // Defines the sun's position, gradient, and shadow at sunrise
+      bottom: -19.2vh;
       left: 10vw; // Sun position at sunrise
+      background: map.get($sun-settings, gradient-sunrise); // Sets the sun's gradient at sunrise
+      box-shadow: map.get($sun-settings, shadow-sunrise); // Sets the sunlight effect for sunrise
     }
-    // Defines the sun's state in the morning
-    12.5% {
-      background: map.get($sun-settings, gradient-sunrise); // Sets the sun's gradient in the morning
-      bottom: 30.6vh; // Sun position in the morning
-      box-shadow: map.get($sun-settings, shadow-morning); // Sets the sunlight effect for morning
+    12.5% { // Defines the sun's state in the morning
+      bottom: 30.6vh;
       left: 10vw; // Sun position in the morning
+      background: map.get($sun-settings, gradient-sunrise); // Sets the sun's gradient in the morning
+      box-shadow: map.get($sun-settings, shadow-morning); // Sets the sunlight effect for morning
     }
-    // Defines the sun's state late in the morning
-    25% {
-      background: map.get($sun-settings, gradient-morning); // Sets the sun's gradient late in the morning
-      bottom: 70.8vh; // Sun position late in the morning
-      box-shadow: map.get($sun-settings, shadow-afternoon); // Sets the sunlight effect for late morning
+    25% { // Defines the sun's state late in the morning
+      bottom: 70.8vh;
       left: 10vw; // Sun position late in the morning
+      background: map.get($sun-settings, gradient-morning); // Sets the sun's gradient late in the morning
+      box-shadow: map.get($sun-settings, shadow-afternoon); // Sets the sunlight effect for late morning
     }
-    // Defines the sun's state at noon
-    37.5% {
-      background: map.get($sun-settings, gradient-morning); // Sets the sun's gradient at noon
-      bottom: 70.8vh; // Sun position at noon
-      box-shadow: map.get($sun-settings, shadow-noon); // Sets the sunlight effect for noon
+    37.5% { // Defines the sun's state at noon
+      bottom: 70.8vh;
       left: 44vw; // Sun position at noon
+      background: map.get($sun-settings, gradient-morning); // Sets the sun's gradient at noon
+      box-shadow: map.get($sun-settings, shadow-noon); // Sets the sunlight effect for noon
     }
-    // Defines the sun's state in the afternoon
-    50% {
-      background: map.get($sun-settings, gradient-morning); // Sets the sun's gradient in the afternoon
-      bottom: 70.8vh; // Sun position in the afternoon
-      box-shadow: map.get($sun-settings, shadow-afternoon); // Sets the sunlight effect for afternoon
+    50% { // Defines the sun's state in the afternoon
+      bottom: 70.8vh;
       left: 78vw; // Sun position in the afternoon
+      background: map.get($sun-settings, gradient-morning); // Sets the sun's gradient in the afternoon
+      box-shadow: map.get($sun-settings, shadow-afternoon); // Sets the sunlight effect for afternoon
     }
-    // Defines the sun's state at sunset
-    62.5% {
-      background: map.get($sun-settings, gradient-sunset); // Sets the sun's gradient at sunset
-      bottom: 30.6vh; // Sun position at sunset
-      box-shadow: map.get($sun-settings, shadow-sunset); // Sets the sunlight effect for sunset
+    62.5% { // Defines the sun's state at sunset
+      bottom: 30.6vh;
       left: 78vw; // Sun position at sunset
+      background: map.get($sun-settings, gradient-sunset); // Sets the sun's gradient at sunset
+      box-shadow: map.get($sun-settings, shadow-sunset); // Sets the sunlight effect for sunset
     }
-    // Defines the sun's state at dusk
-    75% {
-      background: map.get($sun-settings, gradient-sunset); // Sets the sun's gradient at dusk
-      bottom: -19.2vh; // Sun position at dusk
-      box-shadow: map.get($sun-settings, shadow-dusk); // Sets the sunlight effect for dusk
+    75% { // Defines the sun's state at dusk
+      bottom: -19.2vh;
       left: 78vw; // Sun position at dusk
+      background: map.get($sun-settings, gradient-sunset); // Sets the sun's gradient at dusk
+      box-shadow: map.get($sun-settings, shadow-dusk); // Sets the sunlight effect for dusk
     }
-    // Defines the sun's state at night
-    87.5% {
-      background: map.get($sun-settings, gradient-night); // Sets the sun's gradient at night
-      bottom: -19.2vh; // Sun position at night
-      box-shadow: map.get($sun-settings, shadow-night); // Sets the sunlight effect for night
+    87.5% { // Defines the sun's state at night
+      bottom: -19.2vh;
       left: 44vw; // Sun position at night
+      background: map.get($sun-settings, gradient-night); // Sets the sun's gradient at night
+      box-shadow: map.get($sun-settings, shadow-night); // Sets the sunlight effect for night
     }
-    100% {
-      background: map.get($sun-settings, gradient-night); // Sets the sun's gradient before dawn
-      bottom: -19.2vh; // Sun position before dawn
-      box-shadow: map.get($sun-settings, shadow-night); // Sets the sunlight effect before dawn
+    100% { // Defines the sun's state before dawn
+      bottom: -19.2vh;
       left: 10vw; // Sun position before dawn
+      background: map.get($sun-settings, gradient-night); // Sets the sun's gradient before dawn
+      box-shadow: map.get($sun-settings, shadow-night); // Sets the sunlight effect before dawn
     }
   }
 }
 
-// Mixin to create a pulsating effect on the sun using keyframes
-// Parameters:
-// $name: Specifies the name of the animation (dynamic)
-// $scale-large: Specifies the scale value for the sun at its largest size (default: 2)
-// $scale-small: Specifies the scale value for the sun at its smallest size (default: 0.8)
+/* =============================
+   Sun pulsate effect
+   Creates subtle scale animation
+   Params: $name, $scale-large, $scale-small
+============================= */
 @mixin mixin-sunPulsate($name, $scale-large: 2, $scale-small: 0.8) {
-  // Generates keyframes for the specified animation name
-  @keyframes #{$name} { 
+  @keyframes #{$name} { // Generates keyframes for the specified animation name
     0%, 75% {
       transform: scale($scale-large); // Sets the sun's scale to its largest size at the start and end of the animation
     }
@@ -154,34 +136,29 @@
   }
 }
 
-// Mixin to create a rotating effect for the moon's texture using keyframes
-// Parameters:
-// $name: Specifies the name of the animation (dynamic)
-// $moon-start-position: Specifies the starting horizontal position of the moon's texture (default: -10%)
-// $moon-end-position: Specifies the ending horizontal position of the moon's texture (default: -50%)
+/* =============================
+   Moon rotation
+   Moves moon texture horizontally
+   Params: $name, $moon-start-position, $moon-end-position
+============================= */
 @mixin mixin-moonRotate($name, $moon-start-position: -10%, $moon-end-position: -50%) {
   @keyframes #{$name} {  // Generates keyframes for the specified animation name
-    // Defines the starting position of the moon's texture
     from {
       transform: translateX($moon-start-position); // Sets the moon's texture at the starting position
     }
-    // Defines the ending position of the moon's texture
     to {
       transform: translateX($moon-end-position); // Moves the moon's texture to the ending position
     }
   }
 }
 
-// Mixin to create a fading effect for the moon using keyframes
-// Parameters:
-// $name: Specifies the name of the animation (dynamic)
-// $opacity-full: Specifies the opacity value when the moon is fully visible (default: 1)
-// $opacity-hidden: Specifies the opacity value when the moon is completely hidden (default: 0)
-// $opacity-partial: Specifies the opacity value when the moon is partially visible (default: 0.5)
+/* =============================
+   Moon fade
+   Controls moon visibility day/night
+   Params: $name, $opacity-full, $opacity-hidden, $opacity-partial
+============================= */
 @mixin mixin-moonFade($name, $opacity-full: 1, $opacity-hidden: 0, $opacity-partial: 0.5) {
-  // Generates keyframes for the specified animation name
-  @keyframes #{$name} { 
-    // Moon fading keyframe: the moon fades out during the day and gradually reappears at night 
+  @keyframes #{$name} { // Moon fading keyframe: the moon fades out during the day and gradually reappears at night 
     0% {
       opacity: $opacity-full; // Defines the moon's opacity at night (fully visible)
     }
@@ -200,16 +177,13 @@
   }
 }
 
-// Mixin to create a glowing effect for the moon using keyframes
-// Parameters:
-// $name: Specifies the name of the animation (dynamic)
-// $glow-color: Specifies the color of the moon's glow (default: #f6f1d5)
-// $glow-size: Specifies the size of the moon's glow radius (default: 150px)
-// $glow-spread: Specifies the spread distance of the moon's glow (default: 50px)
-// $no-glow: Specifies the value when the moon's glow is turned off (default: none)
+/* =============================
+   Moon glow
+   Adds glowing effect to moon
+   Params: $name, $glow-color, $glow-size, $glow-spread, $no-glow
+============================= */
 @mixin mixin-moonGlow($name, $glow-color: #f6f1d5, $glow-size: 150px, $glow-spread: 50px, $no-glow: none) {
-  @keyframes #{$name} { // Generates keyframes for the specified animation name
-    // Moon glow keyframe: the moon's glowing light fades in and out
+  @keyframes #{$name} { // Moon glow keyframe: the moon's glowing light fades in and out
     0% {
       box-shadow: 0 0 $glow-size $glow-spread $glow-color; // Defines the moon's glow at its maximum visibility
     }
@@ -222,16 +196,13 @@
   }
 }
 
-// Mixin to create a drifting animation for clouds using keyframes
-// Parameters:
-// $name: Specifies the name of the animation (dynamic)
-// $start-x: Specifies the starting horizontal position of the cloud (default: -100%)
-// $end-x: Specifies the ending horizontal position of the cloud (default: 500%)
-// $start-scale: Specifies the initial scale of the cloud (default: 1)
-// $end-scale: Specifies the final scale of the cloud (default: 1.5)
+/* =============================
+   Cloud drift
+   Moves clouds horizontally with scaling
+   Params: $name, $start-x, $end-x, $start-scale, $end-scale
+============================= */
 @mixin mixin-cloudDrift($name, $start-x: -100%, $end-x: 500%, $start-scale: 1, $end-scale: 1.5) {
-  // Cloud drifting keyframe: simulates clouds drifting from left to right across the screen 
-  @keyframes #{$name} { // Generates keyframes for the specified animation name
+  @keyframes #{$name} { // Cloud drifting keyframe: simulates clouds drifting from left to right across the screen 
         0% {
       transform: translateX($start-x) scale($start-scale); // Defines the cloud's initial position and scale
     }
@@ -241,15 +212,13 @@
   }
 }
 
-// Mixin to control the visibility of particles using keyframes
-// Parameters:
-// $name: Specifies the name of the animation (dynamic)
-// $opacity-full: Specifies the opacity value when particles are fully visible (default: 1)
-// $opacity-hidden: Specifies the opacity value when particles are completely hidden (default: 0)
-// $opacity-partial: Specifies the opacity value when particles are partially visible (default: 0.5)
+/* =============================
+   Particle visibility
+   Shows/hides particles over day/night
+   Params: $name, $opacity-full, $opacity-hidden, $opacity-partial
+============================= */
 @mixin mixin-particleVisibility($name, $opacity-full: 1, $opacity-hidden: 0, $opacity-partial: 0.5) {
-  @keyframes #{$name} { // Generates keyframes for the specified animation name
-    // Particle visibility keyframe: particles are visible at night and hidden during the day 
+  @keyframes #{$name} { // Particle visibility keyframe: particles are visible at night and hidden during the day 
     0%, 75% { 
       opacity: $opacity-partial; // Defines the particle's visibility at dawn (partially visible)
     }
@@ -262,15 +231,13 @@
   }
 }
 
-// Mixin to create an animation for shooting stars using keyframes
-// Parameters:
-// $name: Specifies the name of the animation (default: shootingStars)
-// $angle: Specifies the angle of movement for the shooting stars (default: 315deg)
-// $start: Specifies the starting horizontal position of the shooting stars (default: 0)
-// $end: Specifies the ending horizontal position of the shooting stars (default: -65.1vw)
+/* =============================
+   Shooting stars
+   Moves stars diagonally
+   Params: $name, $angle, $start, $end
+============================= */
 @mixin mixin-shootingStars($name: shootingStars, $angle: 315deg, $start: 0, $end: -65.1vw) {
-  // Shooting stars keyframes: simulates shooting stars moving diagonally across the screen 
-  @keyframes #{$name} { // Generates keyframes for the specified animation name
+  @keyframes #{$name} { // Shooting stars keyframes: simulates shooting stars moving diagonally across the screen
     0% {
       transform: rotate($angle) translateX($start); // Defines the initial position and angle of the shooting star
     }
@@ -280,14 +247,13 @@
   }
 }
 
-// Mixin to create an animation for a comet tail effect using keyframes
-// Parameters:
-// $name: Specifies the name of the animation (dynamic)
-// $opacity-full: Specifies the opacity value when the comet tail is fully visible (default: 1)
-// $opacity-hidden: Specifies the opacity value when the comet tail is completely hidden (default: 0)
+/* =============================
+   Comet tail
+   Controls visibility of comet tail
+   Params: $name, $opacity-full, $opacity-hidden
+============================= */
 @mixin mixin-cometTail($name, $opacity-full: 1, $opacity-hidden: 0) {
-  // Comet tail keyframes: controls the visibility of the comet tail effect 
-  @keyframes #{$name} { // Generates keyframes for the specified animation name
+  @keyframes #{$name} { // Comet tail keyframes: controls the visibility of the comet tail effect 
     0%, 12.5% { 
       opacity: $opacity-full; // Defines the comet tail's visibility at the beginning of the animation (fully visible)
     } 
@@ -300,12 +266,10 @@
   }
 }
 
-// Mixin to control the visibility of the fourth shooting-star using keyframes
-// Parameters:
-// $name: Specifies the name of the animation (dynamic)
-// $opacity-partial: Specifies the opacity value when stars are partially visible (default: 0.25)
-// $opacity-hidden: Specifies the opacity value when stars are completely hidden (default: 0)
-// $opacity-full: Specifies the opacity value when stars are fully visible (default: 1)
+/* =============================
+   Star visibility control (4th star)
+   Params: $name, $opacity-partial, $opacity-hidden, $opacity-full
+============================= */
 @mixin mixin-starVisibilityControl($name, $opacity-partial: 0.25, $opacity-hidden: 0, $opacity-full: 1) {
   @keyframes #{$name} { // Generates keyframes for the specified animation name
     0% { 
@@ -323,9 +287,11 @@
   }
 }
 
-// Mixin to control the z-index property of an element
-// Parameters:
-// $value: Specifies the z-index value to be applied (must be a number)
+/* =============================
+   z-index
+   Applies z-index if value is numeric
+   Params: $value
+============================= */
 @mixin z-index($value) {
   @if meta.type-of($value) == "number" { // Checks if the provided value is a number
     & {
@@ -336,79 +302,63 @@
   }
 }
 
-// Mixin to set the size of an element, including optional minimum and maximum width
-// Parameters:
-// $width: Specifies the width of the element
-// $height: Specifies the height of the element (defaults to the same value as width if not explicitly provided)
-// $min-width: Optionally sets the minimum width of the element (default: null)
-// $max-width: Optionally sets the maximum width of the element (default: null)
+/* =============================
+   Size
+   Sets width/height, optional min/max
+   Params: $width, $height, $min-width, $max-width
+============================= */
 @mixin size($width, $height: $width, $min-width: null, $max-width: null) {
   & {
     width: $width; // Set the width of the element
     height: $height; // Set the height of the element; defaults to the width if not explicitly provided
-  }
-  
-  // Conditionally set the minimum width if specified
+  } 
   @if $min-width != null {
-    min-width: $min-width;
-  }
-
-  // Conditionally set the maximum width if specified
-  @if $max-width != null {
     & {
-    max-width: $max-width;
+      min-width: $min-width; // Conditionally set the minimum width if specified
+    }
+  }
+  @if $max-width != null { // Conditionally set the maximum width if specified
+    & {
+      max-width: $max-width;
     }
   }
 }
 
-// Mixin to define and apply multiple animations simultaneously using a dynamic list of animations
-// Parameters:
-// $animations: A variable list of animations, where each animation is defined as a list with the following properties:
-//   1. $name: Animation name
-//   2. $duration: Duration of the animation (e.g., '2s', '1s')
-//   3. $timing: Timing function (e.g., 'linear', 'ease-in')
-//   4. $delay: Delay before the animation starts (e.g., '0s')
-//   5. $iteration: Number of times the animation repeats (e.g., 'infinite', '1')
+/* =============================
+   Multiple animations
+   Applies multiple animations at once
+   Params: $animations (list of [name, duration, timing, delay, iteration])
+============================= */
 @mixin dynamic-animations($animations...) {
   $animation-list: (); // Initialize an empty list to store the animation properties
-
-  // Iterate over each animation passed as an argument
-  @each $animation in $animations { 
+  @each $animation in $animations { // Iterate over each animation passed as an argument
     $name: list.nth($animation, 1); // Extract animation name
     $duration: list.nth($animation, 2); // Extract duration of the animation
     $timing: list.nth($animation, 3); // Extract timing function (e.g., linear, ease-in)
     $delay: list.nth($animation, 4); // Extract delay before the animation starts
     $iteration: list.nth($animation, 5); // Extract the number of iterations
-
     // Append the formatted animation properties to the animation list
-    $animation-list: list.append(
-      $animation-list,
-      #{$name} #{$duration} #{$timing} #{$delay} #{$iteration},
-      comma
-    );
+    $animation-list: list.append($animation-list, #{$name} #{$duration} #{$timing} #{$delay} #{$iteration}, comma); 
   }
-
-  // Apply the compiled list of animations to the element
-  animation: $animation-list;
+  
+  animation: $animation-list; // Apply the compiled list of animations to the element
 }
 
-// Mixin to set individual animation properties for an element
-// Parameters:
-// $duration: Specifies the duration of the animation (e.g., '2s', '1s')
-// $iteration: Defines how many times the animation will repeat (default is 1)
-// $delay: Sets a delay before the animation starts (e.g., '0s')
+/* =============================
+   Animation properties
+   Sets duration, iteration, delay
+   Params: $duration, $iteration, $delay
+============================= */
 @mixin animation-properties($duration, $iteration: 1, $delay) {
   animation-duration: $duration; // Sets the duration of the animation
   animation-iteration-count: $iteration; // Sets how many times the animation will repeat (defaults to 1)
   animation-delay: $delay; // Sets a delay before the animation starts
 }
 
-// Mixin to control the visibility of the second and third shooting stars using keyframes
-// Parameters:
-// $name: Specifies the name of the animation (dynamic)
-// $opacity-partial: Specifies the opacity when the star is partially visible (default: 0.5)
-// $opacity-hidden: Specifies the opacity when the star is fully hidden (default: 0)
-// $opacity-full: Specifies the opacity when the star is fully visible (default: 1)
+/* =============================
+   Star visibility control (2nd & 3rd stars)
+   Params: $name, $opacity-partial, $opacity-hidden, $opacity-full
+============================= */
 @mixin mixin-starVisibilityControl2($name, $opacity-partial: 0.5, $opacity-hidden: 0, $opacity-full: 1) {
   @keyframes #{$name} { // Generates keyframes for the specified animation name
     0% { 
@@ -423,21 +373,37 @@
   }
 }
 
-// Mixin to handle multiple box-shadow values and apply them to an element
-// Parameters:
-// $shadows: A variable list of shadow values that will be combined and applied to the element
+/* =============================
+   Box shadow
+   Applies multiple shadows
+   Params: $shadows (list of box-shadow values)
+============================= */
 @mixin box-shadow($shadows...) {
   $box-shadow-list: (); // Initialize an empty list to store box-shadow values
-
-  // Iterate over each shadow passed as an argument
-  @each $shadow in $shadows {
-    & {
+  @each $shadow in $shadows { // Iterate over each shadow passed as an argument
     $box-shadow-list: list.append($box-shadow-list, $shadow, comma); // Append each shadow value to the list
-    }
   }
   & {
-  box-shadow: $box-shadow-list; // Apply the compiled list of box-shadow values to the element
+    box-shadow: $box-shadow-list; // Apply the compiled list of box-shadow values to the element
   }
 }
 
+/* =============================
+   Full transition
+   Sets longhand transition properties
+   Params: $property, $duration, $timing, $delay, $behavior
+============================= */
+@mixin transition-full(
+  $property: all,
+  $duration: 0s,
+  $timing: ease,
+  $delay: 0s,
+  $behavior: normal
+) {
+  transition-property: $property;
+  transition-duration: $duration;
+  transition-timing-function: $timing;
+  transition-delay: $delay;
+  transition-behavior: $behavior;
+}
 

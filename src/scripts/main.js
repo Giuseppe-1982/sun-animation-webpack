@@ -1,57 +1,121 @@
-import '../styles/scss/main.scss'; // Import the SCSS file
+/* 
+-----------------------------------------------------------------------------
+ When JavaScript finishes loading, this removes "display: none;" from <html>.
+ The page is initially hidden to prevent layout flashes before styles and
+ scripts are fully ready. Restoring display makes the page visible normally.
+-----------------------------------------------------------------------------
+*/
+document.documentElement.style.display = '';
 
-// Select all animated elements
-const elements = [
-  document.querySelector('body'), // Select the body element
-  document.querySelector('.sun'), // Select the sun element
-  document.querySelector('.moon-container'), // Select the moon container
-  document.querySelector('.moon-texture'), // Select the moon texture
-  document.querySelector('.cloud1-std'), // Select cloud1 standard
-  document.querySelector('.cloud2-std'), // Select cloud2 standard
-  document.querySelector('.cloud3-std'), // Select cloud3 standard
-  document.querySelector('.cloud1-alt'), // Select cloud1 alternate
-  document.querySelector('.cloud2-alt'), // Select cloud2 alternate
-  document.querySelector('.cloud3-alt'), // Select cloud3 alternate
-  document.querySelector('#particles-js'), // Select particles container
-  document.querySelector('.shooting-stars-container'), // Select shooting stars container
-  ...document.querySelectorAll('.shooting-star'), // Select all shooting star elements
-];
+import '../styles/scss/main.scss';
+import { initParticles, startParticles, pauseParticles } from './particles-setup.js';
 
-// Get the background music element
-const backgroundMusic = document.getElementById('background-music'); // Select audio element
-let isPaused = false; // Track whether animations and music are paused
+/* 
+-----------------------------------------------------------------------------
+ DOM ELEMENT REFERENCES
+-----------------------------------------------------------------------------
+*/
+const animationContainer = document.querySelector('#animation-container');
+const playButton = document.querySelector('#play-button');
+const iconPlay = playButton.querySelector('.icon-play');
+const iconPause = playButton.querySelector('.icon-pause');
+const backgroundMusic = document.querySelector('#background-music');
 
-// Function to pause or resume animations
-function toggleAnimations(pause) {
-  elements.forEach(element => {
-    if (!element) return; // Skip if element does not exist
-    if (pause) {
-      element.classList.add('paused'); // Add 'paused' class to pause animation
-    } else {
-      element.classList.remove('paused'); // Remove 'paused' class to resume animation
-    }
-  });
+let isPaused = true; // Tracks whether the animation is currently paused
+let animTimeout;     // Timeout ID used for the button transition animation
+
+/* 
+-----------------------------------------------------------------------------
+ INITIAL STATE SETUP
+-----------------------------------------------------------------------------
+*/
+animationContainer.classList.add('paused'); // Start with all animations paused
+initParticles(); // Initialize the particle system
+if (backgroundMusic) backgroundMusic.pause(); // Music starts muted/paused
+
+// Show the button with the Play icon enabled by default
+playButton.classList.remove('hidden');
+playButton.classList.remove('playing');
+iconPlay.style.display = 'block';
+iconPause.style.display = 'none';
+
+/* 
+-----------------------------------------------------------------------------
+ FUNCTION: animatePlayButton()
+ Handles the small visual animation of the Play/Pause button:
+ - Slight zoom-in
+ - Brief pause
+ - Shrink and fade out
+-----------------------------------------------------------------------------
+*/
+function animatePlayButton() {
+  // Display the correct icon depending on pause state
+  iconPlay.style.display = isPaused ? 'block' : 'none';
+  iconPause.style.display = isPaused ? 'none' : 'block';
+
+  // Reset animation state (forces it to restart cleanly)
+  playButton.style.transition = 'none';
+  playButton.style.transform = 'translate(-50%, -50%) scale(1)';
+  playButton.style.opacity = '1';
+  playButton.offsetHeight; // Force reflow to reapply transitions
+
+  clearTimeout(animTimeout);
+
+  // Step 1: Slight zoom-in
+  playButton.style.transition = 'transform 0.3s ease';
+  playButton.style.transform = 'translate(-50%, -50%) scale(1.2)';
+
+  // Step 2: After 0.8s, shrink and fade out
+  animTimeout = setTimeout(() => {
+    playButton.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
+    playButton.style.transform = 'translate(-50%, -50%) scale(0.8)';
+    playButton.style.opacity = '0';
+  }, 800);
 }
 
-// Manual control: toggle animations and music on click
-document.addEventListener('click', () => {
-  toggleAnimations(!isPaused); // Pause/resume animations
+/* 
+-----------------------------------------------------------------------------
+ FUNCTION: toggleAnimations()
+ Toggles:
+ - CSS animations
+ - particle engine
+ - background music
+ Called on any click interaction.
+-----------------------------------------------------------------------------
+*/
+function toggleAnimations() {
+  isPaused = !isPaused;
+  animationContainer.classList.toggle('paused', isPaused);
 
-  if (isPaused) {
-    backgroundMusic.play(); // Play music if currently paused
-  } else {
-    backgroundMusic.pause(); // Pause music if currently playing
-  }
+  // Particle control
+  if (isPaused) pauseParticles();
+  else startParticles();
 
-  isPaused = !isPaused; // Flip the paused state
+  // Music control
+  if (backgroundMusic) isPaused ? backgroundMusic.pause() : backgroundMusic.play();
+
+  // Update button visual state
+  playButton.classList.toggle('playing', !isPaused);
+
+  // Trigger button animation
+  animatePlayButton();
+}
+
+/* 
+-----------------------------------------------------------------------------
+ EVENT LISTENERS
+-----------------------------------------------------------------------------
+*/
+animationContainer.addEventListener('click', toggleAnimations);
+
+playButton.addEventListener('click', (e) => {
+  e.stopPropagation(); // Prevents double trigger
+  toggleAnimations();
 });
 
-// Automatically pause animations when the music ends
+// If music ends naturally, pause all animations too
 if (backgroundMusic) {
   backgroundMusic.addEventListener('ended', () => {
-    toggleAnimations(true); // Pause all animations
-    isPaused = true; // Update the paused state
+    if (!isPaused) toggleAnimations();
   });
-} else {
-  console.warn('Audio element not found: background-music'); // Warn if audio element is missing
 }
